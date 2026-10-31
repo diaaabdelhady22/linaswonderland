@@ -146,7 +146,7 @@ h2{font-size:1.35rem;margin:22px 0 10px}
  <a class="cb" href="#/cart" id="cbt"></a>
 </header>
 <main id="app"></main>
-<footer>Lina’s Wonderland, made with love <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></footer>
+<footer>Lina’s Wonderland, create your own one <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></footer>
 <div id="ld"><div><i></i>One moment, talking to the database</div></div>
 <div id="md"><div class="box" id="mb"></div></div>
 <div id="ts"></div>
@@ -355,7 +355,7 @@ async function col(){
 function gift(k){
  const pf=prof(),l=P.filter(p=>p.category===k),sh=JSON.parse(localStorage.lw_ship||'{}');
  if(!l.length)return toast('No products available for the gift right now',1);
- modal(`${xb}<h3>Choose your gift</h3><select id="gs">${l.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select><p class="note">Delivery is at <b>${SCHOOL}</b></p><input id="cg" placeholder="Academic year (e.g. Grade 7)" value="${esc(sh.grade)}"><input id="cl" placeholder="Class (e.g. 7/B)" value="${esc(sh.cls)}"><button class="btn" id="gk">Claim gift</button>`);
+ modal(`${xb}<h3>Choose your gift</h3><select id="gs">${l.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select><p class="note">Delivery is at <b>${SCHOOL}</b></p><input id="cg" placeholder="Academic year" value="${esc(sh.grade)}"><input id="cl" placeholder="Class" value="${esc(sh.cls)}"><button class="btn" id="gk">Claim gift</button>`);
  $('#gk').onclick=async()=>{
   const grade=$('#cg').value.trim(),cls=$('#cl').value.trim(),p=P.find(x=>x.id==$('#gs').value);
   if(!grade||!cls)return toast('Enter your academic year and class',1);
