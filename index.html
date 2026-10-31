@@ -3,8 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Lina’s Wonderland</title>
+<title>Lina’s Wonderland | Blind Bags &amp; Laminated Photos</title>
+<meta name="description" content="Open the bag, find the surprise! Blind bags and laminated photos full of surprises. Unlock every item, collect the rare ones and earn free gifts.">
+<meta name="theme-color" content="#f792b6">
+<!-- Open Graph / link preview. IMPORTANT: replace https://YOUR-DOMAIN.com with your real site address (crawlers need absolute URLs) -->
+<link rel="canonical" href="https://YOUR-DOMAIN.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lina’s Wonderland">
+<meta property="og:title" content="Lina’s Wonderland | Open the bag. Find the surprise.">
+<meta property="og:description" content="Blind bags and laminated photos full of surprises. Collect rare items and earn free gifts!">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lina’s Wonderland logo">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lina’s Wonderland | Open the bag. Find the surprise.">
+<meta name="twitter:description" content="Blind bags and laminated photos full of surprises. Collect rare items and earn free gifts!">
+<meta name="twitter:image" content="https://YOUR-DOMAIN.com/og-image.png">
 <link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* Palette sampled from logo.png */
@@ -137,6 +156,24 @@ h2{font-size:1.35rem;margin:22px 0 10px}
 .sp em,.spb em{font-style:normal;font-weight:600;font-size:.85rem;background:var(--pink2);border:2px solid var(--ink);border-radius:99px;padding:0 12px;white-space:nowrap}
 .spb{display:flex;align-items:center;gap:12px;margin-top:26px;padding:12px 14px;background:var(--lav2);border:3px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink)}
 .spb .spi{width:44px;height:44px}.spb div{flex:1}.spb b{display:block}.spb small{font-size:.85rem}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.opt{flex:1;min-width:110px;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:6px 10px;cursor:pointer;text-align:center}
+.opt.on{background:var(--pink2);box-shadow:3px 3px 0 var(--ink)}
+.opt b{display:block}.opt small{font-size:.8rem}
+.lbl{font-weight:600;margin-top:10px}
+.pbox{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--sun);border:3px solid var(--ink);border-radius:16px;padding:6px 14px;margin:8px 0 10px;box-shadow:3px 3px 0 var(--ink);font-weight:600}
+.pbox b{font-size:1.3rem}
+.trk{display:flex;margin:14px 0 6px}
+.trk div{flex:1;text-align:center;position:relative;font-size:.8rem;font-weight:500;color:#9c90c4}
+.trk div::before{content:"";display:block;width:26px;height:26px;border-radius:50%;border:3px solid var(--ink);background:#fff;margin:0 auto 4px;position:relative;z-index:1}
+.trk div::after{content:"";position:absolute;top:12px;left:-50%;width:100%;height:4px;background:#e1daf5;z-index:0}
+.trk div:first-child::after{display:none}
+.trk div.done{color:var(--ink)}
+.trk div.done::before{background:var(--pink)}
+.trk div.done::after{background:var(--pink)}
+.trk div.cur::before{background:var(--sun);box-shadow:0 0 0 4px var(--lav3)}
+.ocard{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:14px;box-shadow:4px 4px 0 var(--ink);margin-bottom:16px}
+.ocard ul{margin:6px 0 6px 20px}
 </style>
 </head>
 <body>
@@ -146,7 +183,7 @@ h2{font-size:1.35rem;margin:22px 0 10px}
  <a class="cb" href="#/cart" id="cbt"></a>
 </header>
 <main id="app"></main>
-<footer>Lina’s Wonderland, create your own one <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></footer>
+<footer>© 2026 Lina’s Wonderland. All rights reserved.</footer>
 <div id="ld"><div><i></i>One moment, talking to the database</div></div>
 <div id="md"><div class="box" id="mb"></div></div>
 <div id="ts"></div>
@@ -193,11 +230,11 @@ const I={
 const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[n]}</svg>`;
 function $(s){return document.querySelector(s)}
 const app=$('#app');
-$('#nv').innerHTML=`<a href="#/">${ic('home',18)} Home</a><a href="#/shop">${ic('bag',18)} Shop</a><a href="#/redeem">${ic('key',18)} Open a Code</a><a href="#/collection">${ic('book',18)} My Collection</a>`;
+$('#nv').innerHTML=`<a href="#/">${ic('home',18)} Home</a><a href="#/shop">${ic('bag',18)} Shop</a><a href="#/redeem">${ic('key',18)} Open a Code</a><a href="#/collection">${ic('book',18)} My Collection</a><a href="#/track">${ic('bag',18)} Track Order</a>`;
 $('#cbt').innerHTML=`${ic('cart',18)} <span id="cc">0</span>`;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SCHOOL='Leaders Language School';
-let P=[],busy=0,tt,mcb,fx=null,imgs=[];
+let P=[],busy=0,tt,mcb,fx=null,imgs=[],S={printed:0,drawn:0},sty='printed';
 
 /* Loading + messages */
 function toast(m,er){const t=$('#ts');t.textContent=m;t.className='on'+(er?' er':'');clearTimeout(tt);tt=setTimeout(()=>t.className='',2800)}
@@ -216,8 +253,16 @@ const badge=()=>$('#cc').textContent=getCart().reduce((a,x)=>a+x.q,0);
 const prof=()=>JSON.parse(localStorage.lw_prof||'null');
 const lines=()=>getCart().map(x=>({...x,p:P.find(p=>p.id==x.id)})).filter(x=>x.p);
 function add(id){const p=P.find(x=>x.id==id);if(!p)return;if(p.stock===0)return toast('Sold out',1);
- const c=getCart(),i=c.find(x=>x.id==id);i?i.q++:c.push({id,q:1});setCart(c);toast('Added to cart')}
-function qty(id,d){let c=getCart();const i=c.find(x=>x.id==id);i.q+=d;if(i.q<1)c=c.filter(x=>x!==i);setCart(c);cart()}
+ const st=p.category==='bag'?sty:'',c=getCart(),i=c.find(x=>x.id==id&&(x.st||'')===st);i?i.q++:c.push({id,q:1,st});setCart(c);toast('Added to cart')}
+function qty(id,st,d){let c=getCart();const i=c.find(x=>x.id==id&&(x.st||'')===st);i.q+=d;if(i.q<1)c=c.filter(x=>x!==i);setCart(c);cart()}
+const pz=v=>S[v]?`EGP ${S[v]}`:'Price to be confirmed';
+/* Ready-made blind bag price per style (falls back to the main price) */
+const bp=(p,v)=>v==='drawn'?(p.priceDrawn??p.price):(p.pricePrinted??p.price);
+const unit=x=>x.p.category==='bag'?bp(x.p,x.st||'printed'):x.p.price;
+const pdisp=p=>{if(p.category!=='bag')return `EGP ${p.price}`;const a=bp(p,'printed'),b=bp(p,'drawn');return a===b?`EGP ${a}`:`From EGP ${Math.min(a,b)}`};
+const stySel=(pr,p)=>`<div class="opts">${['printed','drawn'].map(v=>`<button type="button" class="opt${v===sty?' on':''}" data-v="${v}" onclick="setSty('${v}')"><b>${v==='printed'?'Printed':'Drawn'}</b>${pr?`<small>${pz(v)}</small>`:p?`<small>EGP ${bp(p,v)}</small>`:''}</button>`).join('')}</div>`;
+const updPrice=()=>{const e=$('#dp');if(e){const p=P.find(x=>x.id==e.dataset.id);if(p)e.textContent='EGP '+bp(p,sty)}const f=$('#spp');if(f)f.textContent=pz(sty)};
+const setSty=v=>{sty=v;document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('on',b.dataset.v===v));updPrice()};
 function ask(){return new Promise(res=>{
  modal(`<h3>Who is opening this?</h3><p>Enter your name and phone number so we can save your collection and gifts.</p><input id="pn" placeholder="Name"><input id="pp" type="tel" placeholder="Phone number"><button class="btn" id="pk">Continue</button>`,()=>res(null));
  $('#pk').onclick=()=>{const n=$('#pn').value.trim(),p=$('#pp').value.replace(/\D/g,'');
@@ -228,7 +273,7 @@ const getCol=async p=>{const s=await getDoc(doc(db,'collectors',p));return {open
 
 /* Cards */
 const img=p=>p.image?`<img src="${p.image}" alt="">`:`<div class="ph">${ic('image',40)}</div>`;
-const card=p=>`<a class="pc" href="#/bag/${p.id}">${img(p)}<b>${esc(p.name)}</b><span class="tag">${CAT[p.category]||CAT.other}</span><div class="pr">EGP ${p.price}</div>${p.stock===0?'<i class="so">Sold out</i>':''}</a>`;
+const card=p=>`<a class="pc" href="#/bag/${p.id}">${img(p)}<b>${esc(p.name)}</b><span class="tag">${CAT[p.category]||CAT.other}</span><div class="pr">${pdisp(p)}</div>${p.stock===0?'<i class="so">Sold out</i>':''}</a>`;
 const spt=k=>k==='bag'?'Design your own blind bag':'Make your own laminated photo';
 const sp=k=>`<a class="sp" href="#/special/${k}"><span class="spi">${ic('star',28)}</span><b>Create your special</b><small>${spt(k)}</small><em>Start</em></a>`;
 const spb=k=>`<a class="spb" href="#/special/${k}"><span class="spi">${ic('star',22)}</span><div><b>Create your special</b><small>${spt(k)}</small></div><em>Start</em></a>`;
@@ -248,11 +293,11 @@ function shop(c='all'){
  const l=c==='all'?P:P.filter(p=>p.category===c);
  app.innerHTML=`<h2>Shop</h2><div class="chips">${[['all','All'],['bag','Blind Bags'],['photo','Laminated Photos'],['other','Other']].map(x=>`<a href="#/shop/${x[0]}" class="${x[0]===c?'on':''}">${x[1]}</a>`).join('')}</div>${l.length||c!=='other'?`<div class="grid">${c==='bag'?sp('bag'):c==='photo'?sp('photo'):c==='all'?sp('bag')+sp('photo'):''}${l.map(card).join('')}</div>`:empty('star','','Nothing here yet.')}`}
 
-async function bag(id){
+async function bag(id){sty='printed';
  const p=P.find(x=>x.id==id);
  if(!p){app.innerHTML=empty('lock','Product not found','','<a class="btn" href="#/shop">Back to shop</a>');return}
  const isBag=p.category==='bag';
- app.innerHTML=`<div class="dt"><div>${img(p)}</div><div><h2>${esc(p.name)}</h2><span class="tag">${CAT[p.category]||CAT.other}</span><p>${esc(p.desc)}</p><div class="pr" style="font-size:1.6rem">EGP ${p.price}</div><br><button class="btn" onclick="add('${p.id}')">${ic('cart',18)} Add to cart</button></div></div>${p.category==='bag'||p.category==='photo'?spb(p.category):''}${isBag?`<h2>Inside this blind bag</h2>${codeBox}<div id="its"></div>`:''}`;
+ app.innerHTML=`<div class="dt"><div>${img(p)}</div><div><h2>${esc(p.name)}</h2><span class="tag">${CAT[p.category]||CAT.other}</span><p>${esc(p.desc)}</p><div class="pr" style="font-size:1.6rem" id="dp" data-id="${p.id}">EGP ${isBag?bp(p,'printed'):p.price}</div>${isBag?`<div class="lbl">Choose a style</div>${stySel(0,p)}`:''}<br><button class="btn" onclick="add('${p.id}')">${ic('cart',18)} Add to cart</button></div></div>${p.category==='bag'||p.category==='photo'?spb(p.category):''}${isBag?`<h2>Inside this blind bag</h2>${codeBox}<div id="its"></div>`:''}`;
  if(!isBag)return;
  const pf=prof();
  const d=await run(async()=>{
@@ -355,13 +400,13 @@ async function col(){
 function gift(k){
  const pf=prof(),l=P.filter(p=>p.category===k),sh=JSON.parse(localStorage.lw_ship||'{}');
  if(!l.length)return toast('No products available for the gift right now',1);
- modal(`${xb}<h3>Choose your gift</h3><select id="gs">${l.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select><p class="note">Delivery is at <b>${SCHOOL}</b></p><input id="cg" placeholder="Academic year" value="${esc(sh.grade)}"><input id="cl" placeholder="Class" value="${esc(sh.cls)}"><button class="btn" id="gk">Claim gift</button>`);
+ modal(`${xb}<h3>Choose your gift</h3><select id="gs">${l.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select><p class="note">Delivery is at <b>${SCHOOL}</b></p><input id="cg" placeholder="Academic year (e.g. Grade 7)" value="${esc(sh.grade)}"><input id="cl" placeholder="Class (e.g. 7/B)" value="${esc(sh.cls)}"><button class="btn" id="gk">Claim gift</button>`);
  $('#gk').onclick=async()=>{
   const grade=$('#cg').value.trim(),cls=$('#cl').value.trim(),p=P.find(x=>x.id==$('#gs').value);
   if(!grade||!cls)return toast('Enter your academic year and class',1);
   localStorage.lw_ship=JSON.stringify({grade,cls});
   const ok=await run(async()=>{const b=writeBatch(db);
-   b.set(doc(collection(db,'orders')),{name:pf.n,phone:pf.p,school:SCHOOL,grade,cls,address:`${SCHOOL} | ${grade} | Class ${cls}`,notes:'',lines:[{id:p.id,name:p.name,price:0,q:1}],total:0,gift:true,status:'new',createdAt:serverTimestamp()});
+   b.set(doc(collection(db,'orders')),{name:pf.n,phone:pf.p,school:SCHOOL,grade,cls,address:`${SCHOOL} | ${grade} | Class ${cls}`,notes:'',lines:[{id:p.id,name:p.name,price:0,q:1}],total:0,gift:true,status:'requested',createdAt:serverTimestamp()});
    b.set(doc(db,'collectors',pf.p),{[k==='bag'?'bagClaimed':'photoClaimed']:increment(1)},{merge:true});
    await b.commit();return 1},'Gift claimed!');
   if(ok){closeM();col()}}}
@@ -377,18 +422,18 @@ const shipSh=()=>JSON.parse(localStorage.lw_ship||'{}');
 function cart(){
  const c=lines();
  if(!c.length){app.innerHTML=empty('cart','Your cart is empty','','<a class="btn" href="#/shop">Shop now</a>');return}
- const t=c.reduce((a,x)=>a+x.p.price*x.q,0);
- app.innerHTML=`<h2>Cart</h2>${c.map(x=>`<div class="row">${img(x.p)}<b>${esc(x.p.name)}</b><span>EGP ${x.p.price*x.q}</span><span class="qty"><button onclick="qty('${x.id}',-1)">−</button> ${x.q} <button onclick="qty('${x.id}',1)">+</button></span></div>`).join('')}
+ const t=c.reduce((a,x)=>a+unit(x)*x.q,0);
+ app.innerHTML=`<h2>Cart</h2>${c.map(x=>`<div class="row">${img(x.p)}<b>${esc(x.p.name)}${x.st?` <small class="tag">${x.st}</small>`:''}</b><span>EGP ${unit(x)*x.q}</span><span class="qty"><button onclick="qty('${x.id}','${x.st||''}',-1)">−</button> ${x.q} <button onclick="qty('${x.id}','${x.st||''}',1)">+</button></span></div>`).join('')}
  <div class="tot">Total: EGP ${t}</div>${ship(prof()||{},shipSh())}<input id="cx" placeholder="Notes (optional)"><button class="btn" onclick="order()">Place order (pay on delivery)</button>`}
 
 async function order(){
  const c=lines(),s=getShip();if(!s)return;
- const total=c.reduce((a,x)=>a+x.p.price*x.q,0);
- const id=await run(async()=>(await addDoc(collection(db,'orders'),{...s,notes:$('#cx').value.trim(),lines:c.map(x=>({id:x.id,name:x.p.name,price:x.p.price,q:x.q})),total,gift:false,status:'new',createdAt:serverTimestamp()})).id,'Order sent');
+ const total=c.reduce((a,x)=>a+unit(x)*x.q,0);
+ const id=await run(async()=>(await addDoc(collection(db,'orders'),{...s,notes:$('#cx').value.trim(),lines:c.map(x=>({id:x.id,name:x.p.name,price:unit(x),q:x.q,style:x.st||''})),total,gift:false,status:'requested',createdAt:serverTimestamp()})).id,'Order sent');
  if(!id)return;
  if(!prof())localStorage.lw_prof=JSON.stringify({n:s.name,p:s.phone});
  setCart([]);
- app.innerHTML=empty('check',`Thank you, ${esc(s.name)}!`,`We received your order and will deliver it at ${SCHOOL}. We will contact you on ${esc(s.phone)} to confirm.<br>Order number: <b>${id.slice(0,6).toUpperCase()}</b>`,'<a class="btn" href="#/">Back to home</a>')}
+ app.innerHTML=empty('check',`Thank you, ${esc(s.name)}!`,`We received your order and will deliver it at ${SCHOOL}. We will contact you on ${esc(s.phone)} to confirm.<br>Order number: <b>${id.slice(0,6).toUpperCase()}</b>`,'<a class="btn" href="#/track">Track my order</a> <a class="btn alt" href="#/">Back to home</a>')}
 
 /* Create your special */
 const MAXC=900000;
@@ -406,10 +451,10 @@ async function toB64(f){
   if(q>.55)q-=.1;else sc*=.8}
  throw Error('Image is too large to compress')}
 function special(k){
- imgs=[];const b=k==='bag';
+ imgs=[];sty='printed';const b=k==='bag';
  app.innerHTML=`<div class="spx"><h2>CREATE YOUR SPECIAL</h2><p>${b?'Design your own blind bag. Tell us what you want inside it, and add up to 4 pictures if you like.':'Add the photo you want us to turn into a laminated photo. At least one picture is required.'}</p>
  <input id="st" placeholder="Title"><textarea id="sd" rows="4" placeholder="Describe what you want"></textarea>
- <label class="file">${ic('upload')} ${b?'Add pictures (up to 4, optional)':'Add pictures (1 to 4, required)'}<input type="file" accept="image/*" multiple hidden onchange="addImgs(this)"></label><div id="pvs" class="pvs"></div>
+ ${b?`<div class="lbl">Choose a style</div>${stySel(1)}<div class="pbox"><span>Price</span><b id="spp">${pz('printed')}</b></div>`:''}<label class="file">${ic('upload')} ${b?'Add pictures (up to 4, optional)':'Add pictures (1 to 4, required)'}<input type="file" accept="image/*" multiple hidden onchange="addImgs(this)"></label><div id="pvs" class="pvs"></div>
  ${ship(prof()||{},shipSh())}<button class="btn" onclick="sendSp('${k}')">Send request</button></div>`}
 const showImgs=()=>$('#pvs').innerHTML=imgs.map((u,i)=>`<div class="pvx"><img src="${u}" alt=""><button class="x" onclick="rmImg(${i})" aria-label="Remove">${ic('x',14)}</button></div>`).join('');
 async function addImgs(inp){
@@ -420,27 +465,48 @@ async function addImgs(inp){
 const rmImg=i=>{imgs.splice(i,1);showImgs()};
 async function sendSp(k){
  const t=$('#st').value.trim();if(!t)return toast('Add a title first',1);
+ const pr=k==='bag'?(S[sty]||0):0;
  if(k==='photo'&&!imgs.length)return toast('Add at least one picture',1);
  const s=getShip();if(!s)return;
  const id=await run(async()=>{
   const b=writeBatch(db),o=doc(collection(db,'orders'));
-  b.set(o,{...s,notes:'',custom:k,title:t,desc:$('#sd').value.trim(),lines:[{id:'custom',name:`Custom ${k==='bag'?'Blind Bag':'Laminated Photo'}: ${t}`,price:0,q:1}],total:0,gift:false,imageCount:imgs.length,status:'new',createdAt:serverTimestamp()});
+  b.set(o,{...s,notes:'',custom:k,title:t,desc:$('#sd').value.trim(),lines:[{id:'custom',name:`Custom ${k==='bag'?'Blind Bag':'Laminated Photo'}: ${t}`,price:pr,q:1,style:k==='bag'?sty:''}],total:pr,style:k==='bag'?sty:'',gift:false,imageCount:imgs.length,status:'requested',createdAt:serverTimestamp()});
   imgs.forEach((u,i)=>b.set(doc(db,'orderImages',o.id+'_'+i),{orderId:o.id,image:u,idx:i}));
   await b.commit();return o.id},'Request sent');
  if(!id)return;
  if(!prof())localStorage.lw_prof=JSON.stringify({n:s.name,p:s.phone});
- app.innerHTML=empty('check','Request sent!',`Thank you! We will contact you on ${esc(s.phone)} to confirm the details and the price. Delivery is at ${SCHOOL}.<br>Order number: <b>${id.slice(0,6).toUpperCase()}</b>`,'<a class="btn" href="#/">Back to home</a>')}
+ app.innerHTML=empty('check','Request sent!',`Thank you! ${pr?`Your ${sty} blind bag costs EGP ${pr}. `:''}We will contact you on ${esc(s.phone)} to confirm the details${pr?'':' and the price'}. Delivery is at ${SCHOOL}.<br>Order number: <b>${id.slice(0,6).toUpperCase()}</b>`,'<a class="btn" href="#/track">Track my order</a> <a class="btn alt" href="#/">Back to home</a>')}
+
+/* Order tracking */
+const STEPS=[['requested','Requested'],['confirmed','Confirmed'],['packaged','Packaged'],['delivered','Delivered']];
+const stOf=v=>v==='new'||!v?'requested':v;
+function track(){
+ const pf=prof();
+ app.innerHTML=`<h2>Track your order</h2><p>Enter the phone number you used when ordering.</p><div class="cbx"><input id="tp" type="tel" placeholder="Phone number" value="${esc(pf?pf.p:'')}" style="text-transform:none;letter-spacing:0"><button class="btn" onclick="doTrack()">Track</button></div><div id="tr"></div>`;
+ if(pf)doTrack()}
+async function doTrack(){
+ const ph=$('#tp').value.replace(/\D/g,'');
+ if(ph.length<10)return toast('Enter a valid phone number',1);
+ const o=await run(async()=>(await getDocs(query(collection(db,'orders'),where('phone','==',ph)))).docs.map(d=>({id:d.id,...d.data()})));
+ if(!o)return;
+ o.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+ $('#tr').innerHTML=o.length?o.map(x=>{
+  const st=stOf(x.status),i=STEPS.findIndex(a=>a[0]===st);
+  return `<div class="ocard"><b>Order #${x.id.slice(0,6).toUpperCase()}</b>${x.gift?' <span class="tag">Gift</span>':''}
+  ${st==='cancelled'?'<p><b>This order was cancelled.</b></p>':`<div class="trk">${STEPS.map((a,k)=>`<div class="${k<=i?'done':''}${k===i?' cur':''}">${a[1]}</div>`).join('')}</div>`}
+  <ul>${(x.lines||[]).map(l=>`<li>${l.q} x ${esc(l.name)}${l.style?` (${esc(l.style)})`:''}</li>`).join('')}</ul>
+  <b>${x.custom&&!x.total?'Price to be confirmed':'Total: EGP '+x.total}</b> <small>${x.createdAt?new Date(x.createdAt.seconds*1000).toLocaleDateString():''}</small></div>`}).join(''):empty('bag','No orders found','We could not find orders for this phone number.')}
 
 /* Router */
 function route(){
  const [r,a]=location.hash.slice(2).split('/');
  document.querySelectorAll('nav a').forEach(x=>x.classList.toggle('on',x.getAttribute('href')==='#/'+(r||'')));
- scrollTo(0,0);({shop,bag,cart,redeem,collection:col,open:openR,special}[r]||home)(a)}
+ scrollTo(0,0);({shop,bag,cart,redeem,collection:col,open:openR,special,track}[r]||home)(a)}
 addEventListener('hashchange',route);
-Object.assign(window,{add,qty,ask,forget,gift,order,closeM,col,scan,scanFile,manual,addImgs,rmImg,sendSp});
+Object.assign(window,{setSty,add,qty,ask,forget,gift,order,closeM,col,scan,scanFile,manual,addImgs,rmImg,sendSp,doTrack});
 
 (async()=>{
- const d=await run(async()=>(await getDocs(collection(db,'products'))).docs.map(x=>({id:x.id,...x.data()})),'Connected to the database');
+ const d=await run(async()=>{const st=await getDoc(doc(db,'settings','prices'));if(st.exists())S={...S,...st.data()};return (await getDocs(collection(db,'products'))).docs.map(x=>({id:x.id,...x.data()}))},'Connected to the database');
  P=(d||[]).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
  badge();route()})();
 </script>

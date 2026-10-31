@@ -68,6 +68,7 @@ code{font-size:.95rem;letter-spacing:1px}
 .cq .ib{margin-top:4px}
 .pvs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0}
 .pvs img{width:100%;aspect-ratio:1;object-fit:cover;border:2px solid var(--ink);border-radius:8px;display:block}
+label{font-weight:500;display:block;margin:4px 0}
 </style>
 </head>
 <body>
@@ -95,7 +96,8 @@ const firebaseConfig={
 const db=getFirestore(initializeApp(firebaseConfig));
 
 const MAX_CHARS=900000;           // base64 length that keeps a Firestore doc safely under 1 MB
-const ST=['new','confirmed','shipped','delivered','cancelled'];
+const ST=['requested','confirmed','packaged','delivered','cancelled'];
+const stOf=s=>s==='new'||!s?'requested':s;
 const RAR=['common','rare','epic','legendary'];
 const CAT={bag:'Blind Bag',photo:'Laminated Photo',other:'Other'};
 
@@ -109,6 +111,7 @@ const I={
  bag:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
  copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
  plus:'<path d="M12 5v14M5 12h14"/>',
+ check:'<path d="M20 6 9 17l-5-5"/>',
  dl:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>'
 };
 const ic=(n,s=18)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[n]}</svg>`;
@@ -144,9 +147,9 @@ async function pick(inp){
  toast(`Image ready: ${kb(f.size)} to ${kb(u.length*.75)}`)}
 
 /* ===== Navigation ===== */
-const TABS=[['orders','Orders','pkg'],['products','Products','bag'],['items','Bag items','gift']];
+const TABS=[['orders','Orders','pkg'],['products','Products','bag'],['items','Bag items','gift'],['prices','Special prices','plus']];
 $('#nv').innerHTML=TABS.map(t=>`<button data-t="${t[0]}" onclick="go('${t[0]}')">${ic(t[2])} ${t[1]}</button>`).join('');
-function go(t){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));({orders,products,items})[t]()}
+function go(t){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));({orders,products,items,prices})[t]()}
 const loadP=async()=>{P=(await run(async()=>(await getDocs(collection(db,'products'))).docs.map(d=>({id:d.id,...d.data()}))))||P;P.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0))};
 const fileBox=`<label class="file">${ic('upload')} Choose image<input type="file" accept="image/*" hidden onchange="pick(this)"></label><img id="pv" class="pv" alt="">`;
 
@@ -154,10 +157,10 @@ const fileBox=`<label class="file">${ic('upload')} Choose image<input type="file
 async function orders(){
  const o=await run(async()=>(await getDocs(collection(db,'orders'))).docs.map(d=>({id:d.id,...d.data()})));if(!o)return;
  o.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
- app.innerHTML=`<h2>Orders (${o.length})</h2>${o.length?o.map(x=>`<div class="card"><div class="top"><b>#${x.id.slice(0,6).toUpperCase()}</b>${x.gift?'<span class="tag">Gift</span>':''}${x.custom?`<span class="tag">Custom ${x.custom}</span>`:''}<span class="gr"></span><select onchange="setSt('${x.id}',this.value)">${ST.map(s=>`<option ${s===x.status?'selected':''}>${s}</option>`).join('')}</select><button class="ib" title="Delete" onclick="delO('${x.id}')">${ic('trash')}</button></div>
+ app.innerHTML=`<h2>Orders (${o.length})</h2>${o.length?o.map(x=>`<div class="card"><div class="top"><b>#${x.id.slice(0,6).toUpperCase()}</b>${x.gift?'<span class="tag">Gift</span>':''}${x.custom?`<span class="tag">Custom ${x.custom}</span>`:''}<span class="gr"></span><select onchange="setSt('${x.id}',this.value)">${ST.map(s=>`<option ${s===stOf(x.status)?'selected':''}>${s}</option>`).join('')}</select><button class="ib" title="Delete" onclick="delO('${x.id}')">${ic('trash')}</button></div>
  <p>${esc(x.name)} | <a href="tel:${esc(x.phone)}">${esc(x.phone)}</a></p><p>${x.grade?`${esc(x.school||'')} | ${esc(x.grade)} | Class ${esc(x.cls)}`:esc(x.address)}</p>
  ${x.custom?`<p><b>${esc(x.title)}</b></p><p>${esc(x.desc)}</p><div class="pvs" id="im${x.id}"></div>`:''}${x.notes?`<p>Note: ${esc(x.notes)}</p>`:''}
- <ul>${(x.lines||[]).map(l=>`<li>${l.q} x ${esc(l.name)}</li>`).join('')}</ul><b>${x.custom?'Price to be confirmed':'Total: EGP '+x.total}</b> <small>${x.createdAt?new Date(x.createdAt.seconds*1000).toLocaleString():''}</small></div>`).join(''):'<p>No orders yet.</p>'}`;
+ <ul>${(x.lines||[]).map(l=>`<li>${l.q} x ${esc(l.name)}${l.style?` (${esc(l.style)})`:''}</li>`).join('')}</ul><b>${x.custom&&!x.total?'Price to be confirmed':'Total: EGP '+x.total}</b> <small>${x.createdAt?new Date(x.createdAt.seconds*1000).toLocaleString():''}</small></div>`).join(''):'<p>No orders yet.</p>'}`;
  o.filter(x=>x.imageCount).forEach(loadImgs)}
 async function loadImgs(x){
  try{const s=await getDocs(query(collection(db,'orderImages'),where('orderId','==',x.id)));
@@ -173,18 +176,20 @@ async function delO(id){
 async function products(){
  await loadP();img=null;
  app.innerHTML=`<h2>Products</h2><div class="card"><input type="hidden" id="pid"><input id="pname" placeholder="Name"><div class="two"><input id="pprice" type="number" min="0" placeholder="Price (EGP)"><input id="pstock" type="number" min="0" placeholder="Stock (empty = unlimited)"></div>
- <select id="pcat">${Object.entries(CAT).map(c=>`<option value="${c[0]}">${c[1]}</option>`).join('')}</select><textarea id="pdesc" rows="3" placeholder="Description"></textarea>${fileBox}
+ <select id="pcat">${Object.entries(CAT).map(c=>`<option value="${c[0]}">${c[1]}</option>`).join('')}</select>
+ <label>Blind bag only: style prices (leave empty to use the main price)</label><div class="two"><input id="ppp" type="number" min="0" placeholder="Printed price (EGP)"><input id="ppd" type="number" min="0" placeholder="Drawn price (EGP)"></div><textarea id="pdesc" rows="3" placeholder="Description"></textarea>${fileBox}
  <div class="top"><button class="btn" onclick="saveP()">${ic('check')} Save product</button><button class="btn alt" onclick="products()">Clear</button></div></div>
- ${P.map(p=>`<div class="row">${p.image?`<img src="${p.image}" alt="">`:`<div class="ph">${ic('image',24)}</div>`}<div class="gr"><b>${esc(p.name)}</b><small>${CAT[p.category]||''} | EGP ${p.price} | ${p.stock==null?'unlimited':p.stock+' in stock'}</small></div><button class="ib" title="Edit" onclick="editP('${p.id}')">${ic('edit')}</button><button class="ib" title="Delete" onclick="delP('${p.id}')">${ic('trash')}</button></div>`).join('')||'<p>No products yet.</p>'}`}
+ ${P.map(p=>`<div class="row">${p.image?`<img src="${p.image}" alt="">`:`<div class="ph">${ic('image',24)}</div>`}<div class="gr"><b>${esc(p.name)}</b><small>${CAT[p.category]||''} | EGP ${p.price}${p.category==='bag'&&(p.pricePrinted!=null||p.priceDrawn!=null)?` (Printed ${p.pricePrinted??p.price} / Drawn ${p.priceDrawn??p.price})`:''} | ${p.stock==null?'unlimited':p.stock+' in stock'}</small></div><button class="ib" title="Edit" onclick="editP('${p.id}')">${ic('edit')}</button><button class="ib" title="Delete" onclick="delP('${p.id}')">${ic('trash')}</button></div>`).join('')||'<p>No products yet.</p>'}`}
 function editP(id){
  const p=P.find(x=>x.id===id);img=null;
- $('#pid').value=id;$('#pname').value=p.name||'';$('#pprice').value=p.price??'';$('#pstock').value=p.stock??'';$('#pcat').value=p.category||'bag';$('#pdesc').value=p.desc||'';
+ $('#pid').value=id;$('#pname').value=p.name||'';$('#pprice').value=p.price??'';$('#pstock').value=p.stock??'';$('#pcat').value=p.category||'bag';$('#ppp').value=p.pricePrinted??'';$('#ppd').value=p.priceDrawn??'';$('#pdesc').value=p.desc||'';
  if(p.image){const v=$('#pv');v.src=p.image;v.style.display='block'}
  scrollTo(0,0);toast('Editing. Choose a new image only if you want to replace it.')}
 async function saveP(){
  const id=$('#pid').value,name=$('#pname').value.trim(),price=parseFloat($('#pprice').value),s=$('#pstock').value;
  if(!name||isNaN(price))return toast('Name and price are required',1);
- const d={name,price,category:$('#pcat').value,desc:$('#pdesc').value.trim(),stock:s===''?null:parseInt(s)};
+ const pp=$('#ppp').value,pd=$('#ppd').value,isBag=$('#pcat').value==='bag';
+ const d={name,price,category:$('#pcat').value,desc:$('#pdesc').value.trim(),stock:s===''?null:parseInt(s),pricePrinted:isBag&&pp!==''?parseFloat(pp):null,priceDrawn:isBag&&pd!==''?parseFloat(pd):null};
  if(img)d.image=img;
  const ok=await run(async()=>{id?await setDoc(doc(db,'products',id),d,{merge:true}):await addDoc(collection(db,'products'),{...d,createdAt:serverTimestamp()});return 1},'Product saved');
  if(ok)products()}
@@ -229,6 +234,15 @@ async function delI(id){
 const cp=t=>navigator.clipboard.writeText(t).then(()=>toast('Copied '+t),()=>toast('Copy failed',1));
 const copyAll=()=>cp(cache.map(i=>`${fmt(i.code)}  ${i.name} (${i.rarity})`).join('\n'));
 
+/* ===== Special blind bag prices ===== */
+async function prices(){
+ const d=await run(async()=>{const s=await getDoc(doc(db,'settings','prices'));return s.exists()?s.data():{}});if(!d)return;
+ app.innerHTML=`<h2>Special blind bag prices</h2><div class="card"><p>These prices apply to every Create Your Special blind bag, depending on the style the customer picks. Ready-made blind bags keep their own product price.</p><label for="pp1">Printed (EGP)</label><input id="pp1" type="number" min="0" value="${d.printed??''}"><label for="pp2">Drawn (EGP)</label><input id="pp2" type="number" min="0" value="${d.drawn??''}"><button class="btn" onclick="savePrices()">${ic('check')} Save prices</button></div>`}
+async function savePrices(){
+ const a=parseFloat($('#pp1').value),b=parseFloat($('#pp2').value);
+ if(isNaN(a)||isNaN(b)||a<0||b<0)return toast('Enter both prices',1);
+ await run(()=>setDoc(doc(db,'settings','prices'),{printed:a,drawn:b}),'Prices saved')}
+
 /* QR codes: each QR opens the store and unlocks the item */
 const link=c=>location.origin+location.pathname.replace(/[^/]*$/,'')+'index.html#/open/'+c;
 function qrPng(t,sz=8){
@@ -242,7 +256,7 @@ function printAll(){
  const w=window.open('','_blank');if(!w)return toast('Allow pop-ups to print',1);
  w.document.write(`<title>QR codes</title><style>body{font-family:sans-serif;display:flex;flex-wrap:wrap;gap:12px}div{width:170px;text-align:center;border:1px dashed #999;padding:8px;font-size:13px;break-inside:avoid}img{width:150px}</style>${cache.map(i=>`<div><img src="${qrPng(link(i.code),8)}"><br><b>${esc(i.name)}</b><br>${fmt(i.code)}</div>`).join('')}`);
  w.document.close();setTimeout(()=>w.print(),400)}
-Object.assign(window,{go,pick,setSt,delO,saveP,editP,delP,addI,delI,cp,copyAll,products,items,orders,dlQR,printAll});
+Object.assign(window,{savePrices,prices,go,pick,setSt,delO,saveP,editP,delP,addI,delI,cp,copyAll,products,items,orders,dlQR,printAll});
 Object.defineProperty(window,'cur',{get:()=>cur,set:v=>cur=v});
 go('orders');
 </script>
