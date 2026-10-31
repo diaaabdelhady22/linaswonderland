@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lina’s Wonderland</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Palette sampled from logo.png */
+:root{--pink:#f792b6;--pink2:#ffdce8;--lav:#b39ddb;--lav2:#efe8fb;--lav3:#d3c5f3;--sun:#ffe59a;--ink:#4f3d87;--bg:#fffafa;--card:#fff}
+*{box-sizing:border-box;margin:0}
+body{font-family:Fredoka,'Trebuchet MS',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;line-height:1.5;background-image:radial-gradient(var(--pink2) 2px,transparent 2px);background-size:26px 26px}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--lav);outline-offset:2px}
+.ic{vertical-align:-4px;flex:none}
+header{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:3px solid var(--ink);display:flex;align-items:center;gap:10px;padding:6px 14px;flex-wrap:wrap}
+.lg img{height:48px;display:block}
+.lg{font-weight:700;font-size:1.2rem}
+nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+nav a{padding:4px 12px;border-radius:99px;font-weight:500;border:2px solid transparent}
+nav a:hover{background:var(--lav2)}
+nav a.on{background:var(--sun);border-color:var(--ink)}
+.cb{background:var(--pink);border:3px solid var(--ink);border-radius:99px;padding:2px 14px;font-weight:700;box-shadow:3px 3px 0 var(--ink);color:#fff}
+main{max-width:1000px;margin:auto;padding:22px 14px 50px}
+h2{font-size:1.6rem;font-weight:700;margin:30px 0 12px}
+.btn{display:inline-block;background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:99px;padding:6px 22px;font-weight:600;cursor:pointer;box-shadow:4px 4px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+.btn.alt{background:var(--lav);}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:center;background:var(--lav2);border:3px solid var(--ink);border-radius:30px;padding:28px;box-shadow:6px 6px 0 var(--ink)}
+.hero h1{font-size:clamp(2rem,6vw,3.3rem);line-height:1.1;font-weight:700}
+.hero p{margin:10px 0 16px;font-size:1.1rem}
+.hero .btn{margin:0 8px 8px 0}
+.stack{position:relative;height:230px}
+.stack div{position:absolute;inset:0;margin:auto;width:130px;height:180px;border:3px solid var(--ink);border-radius:18px;display:grid;place-items:center;font-size:3.4rem;font-weight:700;box-shadow:4px 4px 0 var(--ink)}
+.stack div:nth-child(1){background:var(--sun);transform:rotate(-14deg) translateX(-60px)}
+.stack div:nth-child(2){background:var(--lav3);transform:rotate(10deg) translateX(60px)}
+.stack div:nth-child(3){background:var(--pink);color:#fff;animation:fl 3s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-12px) rotate(3deg)}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:16px}
+.pc{position:relative;background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:10px;display:flex;flex-direction:column;gap:4px;box-shadow:4px 4px 0 var(--ink)}
+.pc:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.pc img,.ph{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:var(--pink2);display:grid;place-items:center;color:var(--lav)}
+.tag{font-size:.8rem;background:var(--lav2);border-radius:99px;padding:0 10px;align-self:flex-start}
+.pr{font-weight:700;color:var(--pink);-webkit-text-stroke:.5px var(--ink)}
+.so{position:absolute;top:8px;right:8px;background:var(--ink);color:#fff;border-radius:99px;padding:0 10px;font-size:.8rem;font-style:normal}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.steps div,.gift{background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:14px}
+.steps b{display:block;font-size:1.15rem}.steps svg{color:var(--pink);margin-bottom:4px}
+.gift{background:var(--sun);text-align:center;box-shadow:4px 4px 0 var(--ink);font-size:1.1rem}.gift .btn{display:block;width:fit-content;margin:12px auto 0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chips a{border:3px solid var(--ink);border-radius:99px;padding:0 16px;background:var(--card);font-weight:500}
+.chips a.on{background:var(--lav3)}
+.dt{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.dt>div:first-child img,.dt>div:first-child .ph{border:3px solid var(--ink);border-radius:22px;width:100%;aspect-ratio:1;object-fit:cover;box-shadow:5px 5px 0 var(--ink)}
+.dt h2{margin-top:0}.dt p{margin:10px 0}
+.cbx{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+input,select,textarea{width:100%;border:3px solid var(--ink);border-radius:14px;padding:6px 12px;background:#fff;margin-bottom:8px}
+.cbx input{flex:1;min-width:180px;margin:0;letter-spacing:2px;text-transform:uppercase}
+.it{border:3px solid var(--c,#cfc8e6);border-radius:18px;padding:8px;background:var(--card);text-align:center;display:flex;flex-direction:column;gap:2px;box-shadow:3px 3px 0 var(--c,#cfc8e6)}
+.it img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px}
+.it.lock{background:repeating-linear-gradient(45deg,var(--lav2),var(--lav2) 10px,#fff 10px,#fff 20px)}
+.q{aspect-ratio:1;display:grid;place-items:center;font-size:3rem;font-weight:700;color:var(--lav)}
+.rb{font-style:normal;font-size:.85rem;font-weight:700;color:var(--c)}
+.r-common{--c:#8e9bc0}.r-rare{--c:#3b9bff}.r-epic{--c:#b05cff}.r-legendary{--c:#ffb000}
+.r-legendary.it,.r-legendary .glow{animation:sh 2s linear infinite}
+@keyframes sh{50%{box-shadow:0 0 16px 4px #ffd34d}}
+.row{display:flex;align-items:center;gap:10px;background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:8px;margin-bottom:10px}
+.row img,.row .ph{width:56px;height:56px;border-radius:10px;flex:none}
+.row b{flex:1}
+.qty button{width:30px;height:30px;border-radius:50%;border:2px solid var(--ink);background:var(--sun);font-weight:700;cursor:pointer}
+.tot{font-size:1.4rem;font-weight:700;margin:14px 0}
+.empty{text-align:center;padding:40px 10px}.empty>svg{display:block;margin:0 auto;color:var(--lav)}.empty p{font-size:1.1rem;margin:6px 0 14px}.empty h2{margin:6px 0}
+.bar{background:#fff;border:3px solid var(--ink);border-radius:99px;height:30px;position:relative;overflow:hidden;margin:8px 0}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--lav3)}.bar span{position:relative;z-index:1;padding:0 14px;font-weight:500}
+#ld,#md{position:fixed;inset:0;z-index:50;display:none;place-items:center;background:#4f3d8799}
+#ld.on,#md.on{display:grid}
+#ld div{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:16px 26px;font-weight:600;text-align:center}
+#ld i{display:block;width:40px;height:40px;margin:0 auto 6px;border:5px solid var(--pink2);border-top-color:var(--pink);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.box{background:#fff;border:3px solid var(--ink);border-radius:24px;padding:20px;width:min(92vw,380px);max-height:90vh;overflow:auto;box-shadow:6px 6px 0 var(--ink);text-align:center;animation:pop .35s}
+.box p{margin:6px 0 10px}
+@keyframes pop{0%{transform:scale(.4) rotate(-8deg);opacity:0}70%{transform:scale(1.06)}}
+.rv .glow{border:4px solid var(--c);border-radius:20px;padding:6px;margin-bottom:8px;color:var(--lav)}.rv img{width:100%;border-radius:14px;display:block}
+#ts{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:60;background:var(--sun);border:3px solid var(--ink);border-radius:99px;padding:4px 20px;font-weight:600;display:none;max-width:92vw;text-align:center}
+#ts.er{background:var(--pink);color:#fff}#ts.on{display:block}
+footer{text-align:center;padding:20px;border-top:3px solid var(--ink);background:var(--card);font-weight:500}
+footer svg{color:var(--pink);vertical-align:-3px}
+html,body{overflow-x:hidden}
+@media(max-width:640px){
+header{padding:6px 10px;gap:6px}
+.lg img{height:40px}
+.cb{order:2;margin-left:auto}
+nav{order:3;flex:0 0 100%;flex-wrap:nowrap;overflow-x:auto;gap:2px;padding-bottom:4px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{white-space:nowrap;padding:2px 10px;font-size:.92rem}
+main{padding:14px 10px 40px}
+h2{font-size:1.35rem;margin:22px 0 10px}
+.hero{grid-template-columns:1fr;padding:18px;border-radius:24px;gap:10px;box-shadow:4px 4px 0 var(--ink)}
+.hero p{font-size:1rem}
+.stack{height:190px}
+.stack div{width:105px;height:150px;font-size:2.6rem}
+.stack div:nth-child(1){transform:rotate(-14deg) translateX(-48px)}
+.stack div:nth-child(2){transform:rotate(10deg) translateX(48px)}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pc{padding:8px;border-radius:16px}
+.dt{grid-template-columns:1fr;gap:14px}
+.row{flex-wrap:wrap}.row b{flex:1 1 120px}
+.box{padding:16px}
+.btn{padding:6px 18px}
+.cbx .btn{flex:1}
+.cbx input{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+
+.box{position:relative}
+.x{position:absolute;top:10px;right:10px;width:34px;height:34px;display:grid;place-items:center;border:2px solid var(--ink);background:var(--pink2);border-radius:50%;cursor:pointer;color:var(--ink);padding:0;z-index:3}
+.it{position:relative}
+.cover{position:absolute;inset:0;border-radius:15px;background:repeating-linear-gradient(45deg,var(--lav2),var(--lav2) 10px,#fff 10px,#fff 20px);display:grid;place-items:center;font-size:3.4rem;font-weight:700;color:var(--lav);z-index:2;transition:transform .9s cubic-bezier(.6,-.3,.4,1.3),opacity .9s}
+.cover.go{transform:scale(.2) rotate(200deg);opacity:0;pointer-events:none}
+.nw{animation:nw 1.1s ease-in-out 2}
+@keyframes nw{50%{transform:scale(1.08);box-shadow:0 0 18px 5px var(--sun)}}
+.sp{position:relative;overflow:hidden;border:3px dashed var(--ink);border-radius:20px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;background:linear-gradient(135deg,var(--pink),var(--lav) 65%,var(--sun));color:#fff;box-shadow:4px 4px 0 var(--ink);min-height:200px}
+.sp:hover{transform:translate(-2px,-2px)}
+.sp b{font-size:1.15rem;line-height:1.1;text-shadow:0 2px 0 var(--ink)}
+.sp small{color:var(--ink);background:#ffffffe6;border-radius:99px;padding:0 10px;font-size:.82rem}
+.spi{display:block;animation:tw 3s ease-in-out infinite}
+.sp i{width:30px;height:30px;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;border:2px solid var(--ink)}
+@keyframes tw{50%{transform:rotate(20deg) scale(1.15)}}
+.spx{max-width:560px;margin:auto}.spx p{margin:6px 0 12px}
+.note{background:var(--lav2);border-radius:12px;padding:4px 12px;margin:4px 0 10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.file{display:inline-flex;gap:6px;align-items:center;border:3px dashed var(--ink);border-radius:14px;padding:6px 14px;cursor:pointer;margin-bottom:8px;background:var(--lav2)}
+.pvs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.pvx{position:relative}.pvx img{width:100%;aspect-ratio:1;object-fit:cover;border:3px solid var(--ink);border-radius:12px;display:block}
+.pvx .x{width:26px;height:26px;top:4px;right:4px}
+.empty .cbx{justify-content:center}
+</style>
+</head>
+<body>
+<header>
+ <a class="lg" href="#/"><img src="logo.png" alt="Lina’s Wonderland" onerror="this.replaceWith('Lina’s Wonderland')"></a>
+ <nav id="nv"></nav>
+ <a class="cb" href="#/cart" id="cbt"></a>
+</header>
+<main id="app"></main>
+<footer>Lina’s Wonderland, made with love <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></footer>
+<div id="ld"><div><i></i>One moment, talking to the database</div></div>
+<div id="md"><div class="box" id="mb"></div></div>
+<div id="ts"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getFirestore,collection,getDocs,getDoc,doc,addDoc,query,where,writeBatch,arrayUnion,increment,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyB6uXdwjpsI4T46WVc0dK3EgS5N5YO1FdI",
+  authDomain:"kreaker-23074.firebaseapp.com",
+  projectId:"kreaker-23074",
+  storageBucket:"kreaker-23074.firebasestorage.app",
+  messagingSenderId:"377533249082",
+  appId:"1:377533249082:web:96d94ab75b9e685634e703"
+};
+const db=getFirestore(initializeApp(firebaseConfig));
+
+/* Reward settings */
+const BAG_EVERY=5, PHOTO_EVERY=3;
+const RAR={common:'Common',rare:'Rare',epic:'Epic',legendary:'Legendary'};
+const ORD=['legendary','epic','rare','common'];
+const CAT={bag:'Blind Bag',photo:'Laminated Photo',other:'Cute Stuff'};
+
+/* Icons (stroke SVG, no emojis) */
+const I={
+ gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>',
+ key:'<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/>',
+ cart:'<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
+ image:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
+ book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+ bag:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+ lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+ star:'<path d="M12 3l2.4 5.6L20 11l-5.6 2.4L12 19l-2.4-5.6L4 11l5.6-2.4z"/>',
+ home:'<path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
+ check:'<path d="M20 6 9 17l-5-5"/>',
+ x:'<path d="M18 6 6 18M6 6l12 12"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ scan:'<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/>',
+ upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>',
+ heart:'<path fill="currentColor" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>'
+};
+const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[n]}</svg>`;
+function $(s){return document.querySelector(s)}
+const app=$('#app');
+$('#nv').innerHTML=`<a href="#/">${ic('home',18)} Home</a><a href="#/shop">${ic('bag',18)} Shop</a><a href="#/redeem">${ic('key',18)} Open a Code</a><a href="#/collection">${ic('book',18)} My Collection</a>`;
+$('#cbt').innerHTML=`${ic('cart',18)} <span id="cc">0</span>`;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SCHOOL='Leaders Language School';
+let P=[],busy=0,tt,mcb,fx=null,imgs=[];
+
+/* Loading + messages */
+function toast(m,er){const t=$('#ts');t.textContent=m;t.className='on'+(er?' er':'');clearTimeout(tt);tt=setTimeout(()=>t.className='',2800)}
+async function run(fn,ok){busy++;$('#ld').classList.add('on');
+ try{const r=await fn();if(ok)toast(ok);return r}
+ catch(e){console.error(e);toast('Database problem: '+(e.code||e.message),1)}
+ finally{if(!--busy)$('#ld').classList.remove('on')}}
+function modal(h,cb){$('#mb').innerHTML=h;$('#md').classList.add('on');mcb=cb}
+function closeM(sk){$('#md').classList.remove('on');const f=mcb;mcb=null;!sk&&f&&f()}
+$('#md').onclick=e=>{if(e.target.id==='md')closeM()};
+
+/* Cart + profile */
+const getCart=()=>JSON.parse(localStorage.lw_cart||'[]');
+const setCart=c=>{localStorage.lw_cart=JSON.stringify(c);badge()};
+const badge=()=>$('#cc').textContent=getCart().reduce((a,x)=>a+x.q,0);
+const prof=()=>JSON.parse(localStorage.lw_prof||'null');
+const lines=()=>getCart().map(x=>({...x,p:P.find(p=>p.id==x.id)})).filter(x=>x.p);
+function add(id){const p=P.find(x=>x.id==id);if(!p)return;if(p.stock===0)return toast('Sold out',1);
+ const c=getCart(),i=c.find(x=>x.id==id);i?i.q++:c.push({id,q:1});setCart(c);toast('Added to cart')}
+function qty(id,d){let c=getCart();const i=c.find(x=>x.id==id);i.q+=d;if(i.q<1)c=c.filter(x=>x!==i);setCart(c);cart()}
+function ask(){return new Promise(res=>{
+ modal(`<h3>Who is opening this?</h3><p>Enter your name and phone number so we can save your collection and gifts.</p><input id="pn" placeholder="Name"><input id="pp" type="tel" placeholder="Phone number"><button class="btn" id="pk">Continue</button>`,()=>res(null));
+ $('#pk').onclick=()=>{const n=$('#pn').value.trim(),p=$('#pp').value.replace(/\D/g,'');
+  if(!n||p.length<10)return toast('Enter a name and a valid phone number',1);
+  localStorage.lw_prof=JSON.stringify({n,p});res({n,p});closeM()}})}
+function forget(){localStorage.removeItem('lw_prof');col()}
+const getCol=async p=>{const s=await getDoc(doc(db,'collectors',p));return {opened:[],total:0,photos:0,bagClaimed:0,photoClaimed:0,...(s.exists()?s.data():{})}};
+
+/* Cards */
+const img=p=>p.image?`<img src="${p.image}" alt="">`:`<div class="ph">${ic('image',40)}</div>`;
+const card=p=>`<a class="pc" href="#/bag/${p.id}">${img(p)}<b>${esc(p.name)}</b><span class="tag">${CAT[p.category]||CAT.other}</span><div class="pr">EGP ${p.price}</div>${p.stock===0?'<i class="so">Sold out</i>':''}</a>`;
+const sp=k=>`<a class="sp" href="#/special/${k}"><span class="spi">${ic('star',44)}</span><b>CREATE YOUR SPECIAL</b><small>${k==='bag'?'Design your own blind bag':'Make your own laminated photo'}</small><i>${ic('plus',18)}</i></a>`;
+const sec=(t,a,c)=>`<h2>${t}</h2><div class="grid">${sp(c)}${a.map(card).join('')}</div>${a.length?`<p style="text-align:center;margin-top:14px"><a class="btn alt" href="#/shop/${c}">See all</a></p>`:''}`;
+const bar=(l,v,m)=>`<div class="bar"><i style="width:${v/m*100}%"></i><span>${l}: ${v}/${m}</span></div>`;
+const codeBox=`<div class="cbx"><button class="btn" onclick="scan()">${ic('scan',18)} Scan QR code</button><button class="btn alt" onclick="manual()">${ic('key',18)} Add code manually</button></div>`;
+const empty=(i,h,p,b)=>`<div class="empty">${ic(i,56)}${h?`<h2>${h}</h2>`:''}${p?`<p>${p}</p>`:''}${b||''}</div>`;
+
+/* Pages */
+function home(){
+ app.innerHTML=`<section class="hero"><div><h1>Open the bag.<br>Find the surprise.</h1><p>Blind bags and laminated photos full of surprises. Unlock every item, collect the rare ones, and earn free gifts.</p><a class="btn" href="#/shop">Shop now</a><a class="btn alt" href="#/redeem">Have a code?</a></div><div class="stack"><div>?</div><div>?</div><div>?</div></div></section>
+ <h2>How it works</h2><div class="steps"><div>${ic('bag',32)}<b>1. Buy</b>Pick a blind bag and we deliver it to your door.</div><div>${ic('key',32)}<b>2. Enter the code</b>Every item inside comes with a secret code.</div><div>${ic('gift',32)}<b>3. Discover</b>Your item appears in your collection with its rarity.</div></div>
+${sec('Blind Bags',P.filter(p=>p.category==='bag').slice(0,3),'bag')}${sec('Laminated Photos',P.filter(p=>p.category==='photo').slice(0,3),'photo')}
+ <h2>Free gifts</h2><div class="gift">Open every <b>${BAG_EVERY}</b> items and get a free blind bag.<br>Open every <b>${PHOTO_EVERY}</b> photos and get a free photo.<a class="btn" href="#/collection">View my collection</a></div>`}
+
+function shop(c='all'){
+ const l=c==='all'?P:P.filter(p=>p.category===c);
+ app.innerHTML=`<h2>Shop</h2><div class="chips">${[['all','All'],['bag','Blind Bags'],['photo','Laminated Photos'],['other','Other']].map(x=>`<a href="#/shop/${x[0]}" class="${x[0]===c?'on':''}">${x[1]}</a>`).join('')}</div>${l.length||c==='bag'||c==='photo'?`<div class="grid">${c==='bag'||c==='photo'?sp(c):''}${l.map(card).join('')}</div>`:empty('star','','Nothing here yet.')}`}
+
+async function bag(id){
+ const p=P.find(x=>x.id==id);
+ if(!p){app.innerHTML=empty('lock','Product not found','','<a class="btn" href="#/shop">Back to shop</a>');return}
+ const isBag=p.category==='bag';
+ app.innerHTML=`<div class="dt"><div>${img(p)}</div><div><h2>${esc(p.name)}</h2><span class="tag">${CAT[p.category]||CAT.other}</span><p>${esc(p.desc)}</p><div class="pr" style="font-size:1.6rem">EGP ${p.price}</div><br><button class="btn" onclick="add('${p.id}')">${ic('cart',18)} Add to cart</button></div></div>${isBag?`<h2>Inside this blind bag</h2>${codeBox}<div id="its"></div>`:''}`;
+ if(!isBag)return;
+ const pf=prof();
+ const d=await run(async()=>{
+  const s=await getDocs(query(collection(db,'items'),where('bagId','==',id)));
+  const its=s.docs.map(x=>({id:x.id,...x.data()})),c=pf?await getCol(pf.p):{opened:[]};
+  await Promise.all(its.filter(i=>c.opened.includes(i.id)).map(async i=>{i.image=(await getDoc(doc(db,'itemImages',i.id))).data()?.image;i.open=1}));
+  return its});
+ if(!d)return;
+ const n=d.filter(i=>i.open).length;
+ $('#its').innerHTML=d.length?`${bar('Opened',n,d.length)}<div class="grid">${d.map(i=>i.open?`<div class="it r-${i.rarity}" id="i${i.id}">${i.image?`<img src="${i.image}" alt="">`:`<div class="q">${ic('gift',40)}</div>`}<b>${esc(i.name)}</b><em class="rb">${RAR[i.rarity]||''}</em></div>`:`<div class="it lock"><div class="q">?</div><small>${ic('lock',14)} Locked</small></div>`).join('')}</div>`:'<p>No items have been added to this bag yet.</p>';playFx()}
+
+let strm;
+function redeem(){app.innerHTML=empty('key','Unlock an item','Scan the QR code on your item, or add its code by hand.',codeBox)}
+const openR=c=>{redeem();unlock(c)};
+const goBag=id=>location.hash==='#/bag/'+id?route():location.hash='#/bag/'+id;
+const stopCam=()=>{strm&&strm.getTracks().forEach(t=>t.stop());strm=null};
+const xb=`<button class="x" onclick="closeM()" aria-label="Close">${ic('x',20)}</button>`;
+function manual(){
+ modal(`${xb}<h3>Add code manually</h3><p>Type the code printed on your item.</p><input id="mi" maxlength="20" placeholder="XXXX-XXXX" style="text-transform:uppercase;letter-spacing:2px;text-align:center"><button class="btn" id="mk">Unlock</button>`);
+ $('#mk').onclick=()=>{const v=$('#mi').value;closeM(1);unlock(v)}}
+async function scan(){
+ modal(`${xb}<h3>Scan QR code</h3><video id="vd" playsinline muted style="width:100%;border:3px solid var(--ink);border-radius:16px"></video><p>Point the camera at the QR code on your item.</p>`,stopCam);
+ try{
+  strm=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+  const v=$('#vd');v.srcObject=strm;await v.play();
+  const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});
+  const tick=()=>{if(!strm)return;
+   if(v.videoWidth){cv.width=v.videoWidth;cv.height=v.videoHeight;cx.drawImage(v,0,0);
+    const r=jsQR(cx.getImageData(0,0,cv.width,cv.height).data,cv.width,cv.height);
+    if(r&&r.data){const t=r.data,m=t.split('#/open/')[1]||t;stopCam();closeM(1);unlock(m);return}}
+   requestAnimationFrame(tick)};
+  tick()
+ }catch(e){stopCam();closeM(1);toast('Camera is not available. Use Add code manually instead.',1)}}
+function playFx(){
+ if(!fx)return;const f=fx,e=$('#i'+f.id);fx=null;if(!e)return;
+ e.scrollIntoView({block:'center',behavior:'smooth'});
+ if(f.fresh){const c=document.createElement('div');c.className='cover';c.textContent='?';e.appendChild(c);setTimeout(()=>c.classList.add('go'),800)}
+ e.classList.add('nw');setTimeout(()=>e.classList.remove('nw'),2400)}
+
+async function openCode(raw){
+ const code=(raw||'').toUpperCase().replace(/[\s-]/g,'');
+ if(!code)return toast('Enter a code first',1);
+ const pf=prof()||await ask();if(!pf)return;
+ return run(async()=>{
+  const s=await getDocs(query(collection(db,'items'),where('code','==',code)));
+  if(s.empty){toast('That code is not valid',1);return}
+  const it={id:s.docs[0].id,...s.docs[0].data()};
+  const image=(await getDoc(doc(db,'itemImages',it.id))).data()?.image,c=await getCol(pf.p),fresh=!c.opened.includes(it.id);
+  let g='';
+  if(fresh){
+   const b=writeBatch(db);
+   b.update(doc(db,'items',it.id),{opens:increment(1)});
+   b.set(doc(db,'collectors',pf.p),{name:pf.n,opened:arrayUnion(it.id),total:increment(1),...(it.type==='photo'?{photos:increment(1)}:{})},{merge:true});
+   await b.commit();
+   if(Math.floor((c.total+1)/BAG_EVERY)>Math.floor(c.total/BAG_EVERY))g='You earned a free blind bag!';
+   if(it.type==='photo'&&Math.floor((c.photos+1)/PHOTO_EVERY)>Math.floor(c.photos/PHOTO_EVERY))g+=' You earned a free photo!';
+  }
+  return {it,image,fresh,g}})}
+async function unlock(code){
+ const r=await openCode(code);if(!r)return;
+ modal(`${xb}<div class="rv r-${r.it.rarity}"><div class="glow">${r.image?`<img src="${r.image}" alt="">`:ic('gift',64)}</div><h3>${r.fresh?'Unlocked!':'Already in your collection'}</h3><b>${esc(r.it.name)}</b><br><em class="rb">${RAR[r.it.rarity]||''}</em>${r.g?`<p>${r.g}</p><a class="btn alt" href="#/collection" onclick="closeM(1)">Go to my gifts</a>`:''}</div>`,()=>{fx={id:r.it.id,fresh:r.fresh};goBag(r.it.bagId)})}
+
+async function col(){
+ const pf=prof();
+ if(!pf){app.innerHTML=empty('book','My Collection','Sign in with your name and phone to see what you opened.','<button class="btn" onclick="ask().then(p=>p&&col())">Continue</button>');return}
+ const d=await run(async()=>{
+  const c=await getCol(pf.p);
+  const its=await Promise.all(c.opened.map(async id=>{const [m,i]=await Promise.all([getDoc(doc(db,'items',id)),getDoc(doc(db,'itemImages',id))]);return m.exists()?{id,...m.data(),image:i.data()?.image}:null}));
+  return {c,its:its.filter(Boolean).sort((a,b)=>ORD.indexOf(a.rarity)-ORD.indexOf(b.rarity))}});
+ if(!d)return;
+ const {c,its}=d,bg=Math.floor(c.total/BAG_EVERY)-c.bagClaimed,pg=Math.floor(c.photos/PHOTO_EVERY)-c.photoClaimed;
+ app.innerHTML=`<h2>${esc(pf.n)}’s Collection</h2>${bar('Next free blind bag',c.total%BAG_EVERY,BAG_EVERY)}${bar('Next free photo',c.photos%PHOTO_EVERY,PHOTO_EVERY)}
+ ${bg>0?`<div class="gift">You have ${bg} free blind bag${bg>1?'s':''} to claim<button class="btn" onclick="gift('bag')">Claim</button></div>`:''}${pg>0?`<div class="gift" style="margin-top:12px">You have ${pg} free photo${pg>1?'s':''} to claim<button class="btn" onclick="gift('photo')">Claim</button></div>`:''}
+ <h2>Items you opened (${its.length})</h2>${its.length?`<div class="grid">${its.map(i=>`<div class="it r-${i.rarity}">${i.image?`<img src="${i.image}" alt="">`:`<div class="q">${ic('gift',40)}</div>`}<b>${esc(i.name)}</b><em class="rb">${RAR[i.rarity]||''}</em></div>`).join('')}</div>`:empty('key','','You have not opened anything yet.','<a class="btn" href="#/redeem">Open a code</a>')}
+ <p style="margin-top:24px"><a href="javascript:forget()">Not you? Switch account</a></p>`}
+
+function gift(k){
+ const pf=prof(),l=P.filter(p=>p.category===k),sh=JSON.parse(localStorage.lw_ship||'{}');
+ if(!l.length)return toast('No products available for the gift right now',1);
+ modal(`${xb}<h3>Choose your gift</h3><select id="gs">${l.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select><p class="note">Delivery is at <b>${SCHOOL}</b></p><input id="cg" placeholder="Academic year (e.g. Grade 7)" value="${esc(sh.grade)}"><input id="cl" placeholder="Class (e.g. 7/B)" value="${esc(sh.cls)}"><button class="btn" id="gk">Claim gift</button>`);
+ $('#gk').onclick=async()=>{
+  const grade=$('#cg').value.trim(),cls=$('#cl').value.trim(),p=P.find(x=>x.id==$('#gs').value);
+  if(!grade||!cls)return toast('Enter your academic year and class',1);
+  localStorage.lw_ship=JSON.stringify({grade,cls});
+  const ok=await run(async()=>{const b=writeBatch(db);
+   b.set(doc(collection(db,'orders')),{name:pf.n,phone:pf.p,school:SCHOOL,grade,cls,address:`${SCHOOL} | ${grade} | Class ${cls}`,notes:'',lines:[{id:p.id,name:p.name,price:0,q:1}],total:0,gift:true,status:'new',createdAt:serverTimestamp()});
+   b.set(doc(db,'collectors',pf.p),{[k==='bag'?'bagClaimed':'photoClaimed']:increment(1)},{merge:true});
+   await b.commit();return 1},'Gift claimed!');
+  if(ok){closeM();col()}}}
+
+const ship=(pf,sh)=>`<p class="note">${ic('bag',16)} Delivery is at <b>${SCHOOL}</b></p><input id="cn" placeholder="Your name" value="${esc(pf.n)}"><input id="cp" type="tel" placeholder="Phone number" value="${esc(pf.p)}"><div class="two"><input id="cg" placeholder="Academic year (e.g. Grade 7)" value="${esc(sh.grade)}"><input id="cl" placeholder="Class (e.g. 7/B)" value="${esc(sh.cls)}"></div>`;
+function getShip(){
+ const name=$('#cn').value.trim(),phone=$('#cp').value.replace(/\D/g,''),grade=$('#cg').value.trim(),cls=$('#cl').value.trim();
+ if(!name||phone.length<10||!grade||!cls){toast('Fill in your name, phone, academic year and class',1);return}
+ localStorage.lw_ship=JSON.stringify({grade,cls});
+ return {name,phone,grade,cls,school:SCHOOL,address:`${SCHOOL} | ${grade} | Class ${cls}`}}
+const shipSh=()=>JSON.parse(localStorage.lw_ship||'{}');
+
+function cart(){
+ const c=lines();
+ if(!c.length){app.innerHTML=empty('cart','Your cart is empty','','<a class="btn" href="#/shop">Shop now</a>');return}
+ const t=c.reduce((a,x)=>a+x.p.price*x.q,0);
+ app.innerHTML=`<h2>Cart</h2>${c.map(x=>`<div class="row">${img(x.p)}<b>${esc(x.p.name)}</b><span>EGP ${x.p.price*x.q}</span><span class="qty"><button onclick="qty('${x.id}',-1)">−</button> ${x.q} <button onclick="qty('${x.id}',1)">+</button></span></div>`).join('')}
+ <div class="tot">Total: EGP ${t}</div>${ship(prof()||{},shipSh())}<input id="cx" placeholder="Notes (optional)"><button class="btn" onclick="order()">Place order (pay on delivery)</button>`}
+
+async function order(){
+ const c=lines(),s=getShip();if(!s)return;
+ const total=c.reduce((a,x)=>a+x.p.price*x.q,0);
+ const id=await run(async()=>(await addDoc(collection(db,'orders'),{...s,notes:$('#cx').value.trim(),lines:c.map(x=>({id:x.id,name:x.p.name,price:x.p.price,q:x.q})),total,gift:false,status:'new',createdAt:serverTimestamp()})).id,'Order sent');
+ if(!id)return;
+ if(!prof())localStorage.lw_prof=JSON.stringify({n:s.name,p:s.phone});
+ setCart([]);
+ app.innerHTML=empty('check',`Thank you, ${esc(s.name)}!`,`We received your order and will deliver it at ${SCHOOL}. We will contact you on ${esc(s.phone)} to confirm.<br>Order number: <b>${id.slice(0,6).toUpperCase()}</b>`,'<a class="btn" href="#/">Back to home</a>')}
+
+/* Create your special */
+const MAXC=900000;
+const readURL=f=>new Promise((r,j)=>{const x=new FileReader();x.onload=()=>r(x.result);x.onerror=j;x.readAsDataURL(f)});
+async function toB64(f){
+ let url=await readURL(f);
+ if(f.size<=1048576&&url.length<MAXC)return url;
+ const im=await new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>j(Error('Not a valid image'));i.src=url});
+ let sc=Math.min(1,1600/Math.max(im.width,im.height)),q=.85;
+ for(let n=0;n<14;n++){
+  const c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);
+  const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
+  url=c.toDataURL('image/jpeg',q);
+  if(url.length<MAXC)return url;
+  if(q>.55)q-=.1;else sc*=.8}
+ throw Error('Image is too large to compress')}
+function special(k){
+ imgs=[];const b=k==='bag';
+ app.innerHTML=`<div class="spx"><h2>CREATE YOUR SPECIAL</h2><p>${b?'Design your own blind bag. Tell us what you want inside it, and add up to 4 pictures if you like.':'Add the photo you want us to turn into a laminated photo. At least one picture is required.'}</p>
+ <input id="st" placeholder="Title"><textarea id="sd" rows="4" placeholder="Describe what you want"></textarea>
+ <label class="file">${ic('upload')} ${b?'Add pictures (up to 4, optional)':'Add pictures (1 to 4, required)'}<input type="file" accept="image/*" multiple hidden onchange="addImgs(this)"></label><div id="pvs" class="pvs"></div>
+ ${ship(prof()||{},shipSh())}<button class="btn" onclick="sendSp('${k}')">Send request</button></div>`}
+const showImgs=()=>$('#pvs').innerHTML=imgs.map((u,i)=>`<div class="pvx"><img src="${u}" alt=""><button class="x" onclick="rmImg(${i})" aria-label="Remove">${ic('x',14)}</button></div>`).join('');
+async function addImgs(inp){
+ const fs=[...inp.files];inp.value='';
+ if(imgs.length+fs.length>4)toast('Up to 4 pictures only',1);
+ for(const f of fs.slice(0,4-imgs.length)){const u=await run(()=>toB64(f));if(u)imgs.push(u)}
+ showImgs()}
+const rmImg=i=>{imgs.splice(i,1);showImgs()};
+async function sendSp(k){
+ const t=$('#st').value.trim();if(!t)return toast('Add a title first',1);
+ if(k==='photo'&&!imgs.length)return toast('Add at least one picture',1);
+ const s=getShip();if(!s)return;
+ const id=await run(async()=>{
+  const b=writeBatch(db),o=doc(collection(db,'orders'));
+  b.set(o,{...s,notes:'',custom:k,title:t,desc:$('#sd').value.trim(),lines:[{id:'custom',name:`Custom ${k==='bag'?'Blind Bag':'Laminated Photo'}: ${t}`,price:0,q:1}],total:0,gift:false,imageCount:imgs.length,status:'new',createdAt:serverTimestamp()});
+  imgs.forEach((u,i)=>b.set(doc(db,'orderImages',o.id+'_'+i),{orderId:o.id,image:u,idx:i}));
+  await b.commit();return o.id},'Request sent');
+ if(!id)return;
+ if(!prof())localStorage.lw_prof=JSON.stringify({n:s.name,p:s.phone});
+ app.innerHTML=empty('check','Request sent!',`Thank you! We will contact you on ${esc(s.phone)} to confirm the details and the price. Delivery is at ${SCHOOL}.<br>Order number: <b>${id.slice(0,6).toUpperCase()}</b>`,'<a class="btn" href="#/">Back to home</a>')}
+
+/* Router */
+function route(){
+ const [r,a]=location.hash.slice(2).split('/');
+ document.querySelectorAll('nav a').forEach(x=>x.classList.toggle('on',x.getAttribute('href')==='#/'+(r||'')));
+ scrollTo(0,0);({shop,bag,cart,redeem,collection:col,open:openR,special}[r]||home)(a)}
+addEventListener('hashchange',route);
+Object.assign(window,{add,qty,ask,forget,gift,order,closeM,col,scan,manual,addImgs,rmImg,sendSp});
+
+(async()=>{
+ const d=await run(async()=>(await getDocs(collection(db,'products'))).docs.map(x=>({id:x.id,...x.data()})),'Connected to the database');
+ P=(d||[]).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+ badge();route()})();
+</script>
+</body>
+</html>
