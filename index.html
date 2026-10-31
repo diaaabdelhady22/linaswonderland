@@ -121,13 +121,6 @@ h2{font-size:1.35rem;margin:22px 0 10px}
 .cover.go{transform:scale(.2) rotate(200deg);opacity:0;pointer-events:none}
 .nw{animation:nw 1.1s ease-in-out 2}
 @keyframes nw{50%{transform:scale(1.08);box-shadow:0 0 18px 5px var(--sun)}}
-.sp{position:relative;overflow:hidden;border:3px dashed var(--ink);border-radius:20px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;background:linear-gradient(135deg,var(--pink),var(--lav) 65%,var(--sun));color:#fff;box-shadow:4px 4px 0 var(--ink);min-height:200px}
-.sp:hover{transform:translate(-2px,-2px)}
-.sp b{font-size:1.15rem;line-height:1.1;text-shadow:0 2px 0 var(--ink)}
-.sp small{color:var(--ink);background:#ffffffe6;border-radius:99px;padding:0 10px;font-size:.82rem}
-.spi{display:block;animation:tw 3s ease-in-out infinite}
-.sp i{width:30px;height:30px;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;border:2px solid var(--ink)}
-@keyframes tw{50%{transform:rotate(20deg) scale(1.15)}}
 .spx{max-width:560px;margin:auto}.spx p{margin:6px 0 12px}
 .note{background:var(--lav2);border-radius:12px;padding:4px 12px;margin:4px 0 10px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -136,6 +129,14 @@ h2{font-size:1.35rem;margin:22px 0 10px}
 .pvx{position:relative}.pvx img{width:100%;aspect-ratio:1;object-fit:cover;border:3px solid var(--ink);border-radius:12px;display:block}
 .pvx .x{width:26px;height:26px;top:4px;right:4px}
 .empty .cbx{justify-content:center}
+.sp{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:14px 10px;min-height:200px;background:var(--lav2);border:3px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink);color:var(--ink)}
+.sp:hover,.spb:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.spi{width:56px;height:56px;flex:none;border-radius:50%;background:#fff;border:3px solid var(--ink);display:grid;place-items:center;color:var(--pink)}
+.sp b{font-size:1.1rem;line-height:1.15}
+.sp small{font-size:.85rem}
+.sp em,.spb em{font-style:normal;font-weight:600;font-size:.85rem;background:var(--pink2);border:2px solid var(--ink);border-radius:99px;padding:0 12px;white-space:nowrap}
+.spb{display:flex;align-items:center;gap:12px;margin-top:26px;padding:12px 14px;background:var(--lav2);border:3px solid var(--ink);border-radius:20px;box-shadow:4px 4px 0 var(--ink)}
+.spb .spi{width:44px;height:44px}.spb div{flex:1}.spb b{display:block}.spb small{font-size:.85rem}
 </style>
 </head>
 <body>
@@ -228,7 +229,9 @@ const getCol=async p=>{const s=await getDoc(doc(db,'collectors',p));return {open
 /* Cards */
 const img=p=>p.image?`<img src="${p.image}" alt="">`:`<div class="ph">${ic('image',40)}</div>`;
 const card=p=>`<a class="pc" href="#/bag/${p.id}">${img(p)}<b>${esc(p.name)}</b><span class="tag">${CAT[p.category]||CAT.other}</span><div class="pr">EGP ${p.price}</div>${p.stock===0?'<i class="so">Sold out</i>':''}</a>`;
-const sp=k=>`<a class="sp" href="#/special/${k}"><span class="spi">${ic('star',44)}</span><b>CREATE YOUR SPECIAL</b><small>${k==='bag'?'Design your own blind bag':'Make your own laminated photo'}</small><i>${ic('plus',18)}</i></a>`;
+const spt=k=>k==='bag'?'Design your own blind bag':'Make your own laminated photo';
+const sp=k=>`<a class="sp" href="#/special/${k}"><span class="spi">${ic('star',28)}</span><b>Create your special</b><small>${spt(k)}</small><em>Start</em></a>`;
+const spb=k=>`<a class="spb" href="#/special/${k}"><span class="spi">${ic('star',22)}</span><div><b>Create your special</b><small>${spt(k)}</small></div><em>Start</em></a>`;
 const sec=(t,a,c)=>`<h2>${t}</h2><div class="grid">${sp(c)}${a.map(card).join('')}</div>${a.length?`<p style="text-align:center;margin-top:14px"><a class="btn alt" href="#/shop/${c}">See all</a></p>`:''}`;
 const bar=(l,v,m)=>`<div class="bar"><i style="width:${v/m*100}%"></i><span>${l}: ${v}/${m}</span></div>`;
 const codeBox=`<div class="cbx"><button class="btn" onclick="scan()">${ic('scan',18)} Scan QR code</button><button class="btn alt" onclick="manual()">${ic('key',18)} Add code manually</button></div>`;
@@ -243,13 +246,13 @@ ${sec('Blind Bags',P.filter(p=>p.category==='bag').slice(0,3),'bag')}${sec('Lami
 
 function shop(c='all'){
  const l=c==='all'?P:P.filter(p=>p.category===c);
- app.innerHTML=`<h2>Shop</h2><div class="chips">${[['all','All'],['bag','Blind Bags'],['photo','Laminated Photos'],['other','Other']].map(x=>`<a href="#/shop/${x[0]}" class="${x[0]===c?'on':''}">${x[1]}</a>`).join('')}</div>${l.length||c==='bag'||c==='photo'?`<div class="grid">${c==='bag'||c==='photo'?sp(c):''}${l.map(card).join('')}</div>`:empty('star','','Nothing here yet.')}`}
+ app.innerHTML=`<h2>Shop</h2><div class="chips">${[['all','All'],['bag','Blind Bags'],['photo','Laminated Photos'],['other','Other']].map(x=>`<a href="#/shop/${x[0]}" class="${x[0]===c?'on':''}">${x[1]}</a>`).join('')}</div>${l.length||c!=='other'?`<div class="grid">${c==='bag'?sp('bag'):c==='photo'?sp('photo'):c==='all'?sp('bag')+sp('photo'):''}${l.map(card).join('')}</div>`:empty('star','','Nothing here yet.')}`}
 
 async function bag(id){
  const p=P.find(x=>x.id==id);
  if(!p){app.innerHTML=empty('lock','Product not found','','<a class="btn" href="#/shop">Back to shop</a>');return}
  const isBag=p.category==='bag';
- app.innerHTML=`<div class="dt"><div>${img(p)}</div><div><h2>${esc(p.name)}</h2><span class="tag">${CAT[p.category]||CAT.other}</span><p>${esc(p.desc)}</p><div class="pr" style="font-size:1.6rem">EGP ${p.price}</div><br><button class="btn" onclick="add('${p.id}')">${ic('cart',18)} Add to cart</button></div></div>${isBag?`<h2>Inside this blind bag</h2>${codeBox}<div id="its"></div>`:''}`;
+ app.innerHTML=`<div class="dt"><div>${img(p)}</div><div><h2>${esc(p.name)}</h2><span class="tag">${CAT[p.category]||CAT.other}</span><p>${esc(p.desc)}</p><div class="pr" style="font-size:1.6rem">EGP ${p.price}</div><br><button class="btn" onclick="add('${p.id}')">${ic('cart',18)} Add to cart</button></div></div>${p.category==='bag'||p.category==='photo'?spb(p.category):''}${isBag?`<h2>Inside this blind bag</h2>${codeBox}<div id="its"></div>`:''}`;
  if(!isBag)return;
  const pf=prof();
  const d=await run(async()=>{
@@ -270,19 +273,42 @@ const xb=`<button class="x" onclick="closeM()" aria-label="Close">${ic('x',20)}<
 function manual(){
  modal(`${xb}<h3>Add code manually</h3><p>Type the code printed on your item.</p><input id="mi" maxlength="20" placeholder="XXXX-XXXX" style="text-transform:uppercase;letter-spacing:2px;text-align:center"><button class="btn" id="mk">Unlock</button>`);
  $('#mk').onclick=()=>{const v=$('#mi').value;closeM(1);unlock(v)}}
+const loadScript=u=>new Promise((r,j)=>{const e=document.createElement('script');e.src=u;e.onload=r;e.onerror=j;document.head.appendChild(e)});
+async function needQR(){
+ if(window.jsQR)return;
+ for(const u of ['https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js','https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js']){
+  try{await loadScript(u);if(window.jsQR)return}catch(e){}}
+ throw {name:'NoLib'}}
+function gotQR(t){const m=(t.split('#/open/')[1]||t).split(/[?&#]/)[0];stopCam();closeM(1);unlock(decodeURIComponent(m))}
 async function scan(){
- modal(`${xb}<h3>Scan QR code</h3><video id="vd" playsinline muted style="width:100%;border:3px solid var(--ink);border-radius:16px"></video><p>Point the camera at the QR code on your item.</p>`,stopCam);
+ modal(`${xb}<h3>Scan QR code</h3><div id="cm"><p>Starting the camera...</p></div><label class="file">${ic('image')} Take or choose a photo of the QR<input type="file" accept="image/*" capture="environment" hidden onchange="scanFile(this)"></label><br><button class="btn alt" onclick="closeM(1);manual()">${ic('key',18)} Add code manually</button>`,stopCam);
+ const cm=$('#cm');
  try{
-  strm=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+  await needQR();
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw {name:'NoHttps'};
+  strm=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});
+  cm.innerHTML='<video id="vd" playsinline muted autoplay style="width:100%;border:3px solid var(--ink);border-radius:16px"></video><p>Point the camera at the QR code on your item.</p>';
   const v=$('#vd');v.srcObject=strm;await v.play();
   const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});
   const tick=()=>{if(!strm)return;
    if(v.videoWidth){cv.width=v.videoWidth;cv.height=v.videoHeight;cx.drawImage(v,0,0);
     const r=jsQR(cx.getImageData(0,0,cv.width,cv.height).data,cv.width,cv.height);
-    if(r&&r.data){const t=r.data,m=t.split('#/open/')[1]||t;stopCam();closeM(1);unlock(m);return}}
+    if(r&&r.data){gotQR(r.data);return}}
    requestAnimationFrame(tick)};
   tick()
- }catch(e){stopCam();closeM(1);toast('Camera is not available. Use Add code manually instead.',1)}}
+ }catch(e){
+  stopCam();console.error(e);
+  const m={NotAllowedError:'Camera permission is blocked. Allow the camera for this site in your browser settings, or use the photo option below.',NotFoundError:'No camera was found on this device.',NoHttps:'Live scanning needs a secure (https) page. Use the photo option below.',NoLib:'The QR reader could not load. Check your internet and try again, or use Add code manually.'}[e.name]||'Could not start the camera. Use the photo option below or Add code manually.';
+  cm.innerHTML=`<p>${m}</p>`}}
+async function scanFile(inp){
+ const f=inp.files[0];inp.value='';if(!f)return;
+ const t=await run(async()=>{
+  await needQR();const u=URL.createObjectURL(f);
+  const im=await new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=u});
+  const sc=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);
+  const x=c.getContext('2d');x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);
+  const r=jsQR(x.getImageData(0,0,c.width,c.height).data,c.width,c.height);return r&&r.data});
+ if(t)gotQR(t);else if(t!==undefined)toast('No QR code found in that photo. Try again, closer and steady.',1)}
 function playFx(){
  if(!fx)return;const f=fx,e=$('#i'+f.id);fx=null;if(!e)return;
  e.scrollIntoView({block:'center',behavior:'smooth'});
@@ -411,7 +437,7 @@ function route(){
  document.querySelectorAll('nav a').forEach(x=>x.classList.toggle('on',x.getAttribute('href')==='#/'+(r||'')));
  scrollTo(0,0);({shop,bag,cart,redeem,collection:col,open:openR,special}[r]||home)(a)}
 addEventListener('hashchange',route);
-Object.assign(window,{add,qty,ask,forget,gift,order,closeM,col,scan,manual,addImgs,rmImg,sendSp});
+Object.assign(window,{add,qty,ask,forget,gift,order,closeM,col,scan,scanFile,manual,addImgs,rmImg,sendSp});
 
 (async()=>{
  const d=await run(async()=>(await getDocs(collection(db,'products'))).docs.map(x=>({id:x.id,...x.data()})),'Connected to the database');
